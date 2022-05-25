@@ -1,4 +1,7 @@
 export class Queue {
+    /**
+     * @param cap capacity of Queue
+     */
     constructor(cap) {
         this.q = new Array(cap);
         this.front = 0;

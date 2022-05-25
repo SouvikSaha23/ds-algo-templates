@@ -1,10 +1,13 @@
 export class Queue<T> {
-	private q;
-	private front;
-	private rear;
-	private cap;
-	private size;
+	private q: T[];
+	private front: number;
+	private rear: number;
+	private cap: number;
+	private size: number;
 
+	/**
+	 * @param cap capacity of Queue
+	 */
 	constructor(cap: number) {
 		this.q = new Array<T>(cap);
 		this.front = 0;
