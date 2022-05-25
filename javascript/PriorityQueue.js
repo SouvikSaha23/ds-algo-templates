@@ -1,12 +1,12 @@
 export class PriorityQueue {
     /**
      * @param capacity  capacity of the priority queue.
-     * @param comparator function to compare priority queue values and return: negative (<0), zero (=0), positive (>0)];
+     * @param compare function to compare priority queue values and return: negative (<0), zero (=0), positive (>0)];
      *        where, negative => prioritize left value; positive => prioritize right value; zero  => prioritize any.
      */
-    constructor(capacity, comparator) {
+    constructor(capacity, compare) {
         this.capacity = capacity;
-        this.comparator = comparator;
+        this.compare = compare;
         this.heap = Array(capacity);
         this.size = 0;
     }
@@ -30,7 +30,7 @@ export class PriorityQueue {
         let i = this.size - 1;
         while (i) {
             const pi = this.parent(i);
-            if (this.comparator(this.heap[i], this.heap[pi]) > 0) {
+            if (this.compare(this.heap[i], this.heap[pi]) > 0) {
                 break;
             }
             this.swap(i, pi);
@@ -73,10 +73,10 @@ export class PriorityQueue {
         const lx = this.left(x);
         const rx = this.right(x);
         let p0 = x;
-        if (lx < this.size && this.comparator(this.heap[p0], this.heap[lx]) > 0) {
+        if (lx < this.size && this.compare(this.heap[p0], this.heap[lx]) > 0) {
             p0 = lx;
         }
-        if (rx < this.size && this.comparator(this.heap[p0], this.heap[rx]) > 0) {
+        if (rx < this.size && this.compare(this.heap[p0], this.heap[rx]) > 0) {
             p0 = rx;
         }
         if (p0 === x) {
