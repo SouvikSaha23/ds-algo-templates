@@ -6,7 +6,7 @@ interface TreeNode<T> {
 type TraversalOption = "inorder" | "preorder" | "postorder";
 type TraversalCallBackFn<T> = (val: T) => boolean; // true => continue, false => stop
 
-export class BinarySearchTree<T> {
+export class Tree<T> {
   private root: TreeNode<T> | null;
 
   constructor(root?: TreeNode<T> | null) {
@@ -72,6 +72,47 @@ export class BinarySearchTree<T> {
       case "inorder":
       default:
         this.traverseInorderRecursively(this.root, callBackFn);
+    }
+  }
+}
+
+
+/**
+Example usage:
+  const inorderTreeIterator = new InorderTreeIterator<number>();
+  const generator = inorderTreeIterator.iterativeGenerator(root);
+  for(const node of generator){
+   ...
+  }
+*/
+class InorderTreeIterator<T> {  
+  *recursiveGenerator(currentNode: TreeNode<T> | null) : Generator<T> {
+      if(!currentNode){
+        return;
+      }
+
+      yield* this.recursiveGenerator(currentNode.left);
+      yield currentNode.val;
+      yield* this.recursiveGenerator(currentNode.right);
+  }
+
+  *iterativeGenerator(rootNode: TreeNode<T> | null): Generator<T> {
+    if(!rootNode){
+      return;
+    }
+
+    const stack = new Array<TreeNode<T>>();
+    let currentNode: TreeNode<T> | null = rootNode;
+
+    while(currentNode || stack.length > 0){
+      if(currentNode){
+        stack.push(currentNode);
+        currentNode = currentNode.left;
+      } else {
+        currentNode = stack.pop()!;
+        yield currentNode.val;
+        currentNode = currentNode.right;
+      }
     }
   }
 }
