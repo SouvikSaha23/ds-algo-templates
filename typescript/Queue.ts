@@ -1,41 +1,41 @@
 export class Queue<T> {
-	private q: T[];
-	private front: number;
-	private rear: number;
-	private cap: number;
-	private size: number;
+  private capacity: number;
+  private q: Array<T>;
+  private front: number;
+  public size: number;
 
-	/**
-	 * @param cap capacity of Queue
-	 */
-	constructor(cap: number) {
-		this.q = new Array<T>(cap);
-		this.front = 0;
-		this.rear = cap - 1;
-		this.cap = cap;
-		this.size = 0;
-	}
+  /**
+   * @param cap capacity of Queue
+   */
+  constructor(cap: number = 5000){
+    this.capacity = cap;
+    this.q = new Array<T>(cap);
+    this.front = 0;
+    this.size = 0;
+  }
 
-	public push(val: T): void {
-		if (this.size === this.cap) {
-			throw new Error('Queue is full!');
-		}
-		this.rear = (this.rear + 1) % this.cap;
-		this.q[this.rear] = val;
-		this.size++;
-	}
+  isEmpty(): boolean {
+    return this.size === 0;
+  }
 
-	public isEmpty(): boolean {
-		return this.size === 0;
-	}
+  push(val: T) {
+    if(this.size === this.capacity){
+      throw new Error("Queue is full!");
+    }
 
-	public pop(): T {
-		if (this.isEmpty()) {
-			throw new Error('Queue is empty!');
-		}
-		const val = this.q[this.front];
-		this.front = (this.front + 1) % this.cap;
-		this.size--;
-		return val;
-	}
+    const rear = (this.front + this.size) % this.capacity ;
+    this.size++;
+    this.q[rear] = val;
+  }
+
+  pop(): T {
+    if(this.isEmpty()){
+      throw new Error("Queue is empty!");
+    }
+
+    const val = this.q[this.front];
+    this.front++;
+    this.size--;
+    return val;
+  }
 }
