@@ -115,4 +115,37 @@ class InorderTreeIterator<T> {
       }
     }
   }
+
+  *morrisTraversalGenerator(rootNode: TreeNode<T> | null) : Generator<T> {
+    if(!rootNode){
+      return;
+    }
+
+    let currentNode: TreeNode<T> | null = rootNode;
+
+    while(currentNode){
+      if(currentNode.left){
+        // Find the inorder predecessor of currentNode.
+        let leftTreeNode: TreeNode<T> = currentNode.left;
+        while(leftTreeNode.right && leftTreeNode.right !== currentNode){
+          leftTreeNode = leftTreeNode.right;
+        }
+
+        if(!leftTreeNode.right){
+          // Modify tree to link inorder successor
+          leftTreeNode.right = currentNode;
+          currentNode = currentNode.left;
+        } else {
+          // Rever tree modification
+          leftTreeNode.right = null;
+          yield currentNode.val;
+          currentNode = currentNode.right;
+        }
+
+      } else {
+        yield currentNode.val;
+        currentNode = currentNode.right;
+      }
+    }
+  }
 }
